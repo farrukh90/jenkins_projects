@@ -9,6 +9,9 @@ node{
     stage("Remove repo"){
         sh "ssh  ec2-user@${ENVIR} sudo  rm -rf /home/ec2-user/stormpath-flask-sample"
     }
+    stage("Remove PID"){
+        sh "ssh  ec2-user@${ENVIR} sudo kill $(sudo lsof -i:5000   | awk '{print $2}' | grep [[:digit:]]) "
+    }
     stage("Pull Repo"){
         sh "ssh  ec2-user@${ENVIR} git clone https://github.com/farrukh90/stormpath-flask-sample.git 2> /dev/null"
     }
